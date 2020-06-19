@@ -7,6 +7,7 @@ import 'package:tflite/tflite.dart';
 
 const String ssd = "SSD MobileNet";
 const String yolo = "Tiny YOLOv2";
+const String custom = "custom";
 
 class TfliteHome extends StatefulWidget {
   @override
@@ -14,8 +15,9 @@ class TfliteHome extends StatefulWidget {
 }
 
 class _TfliteHomeState extends State<TfliteHome> {
-  String _model = ssd;
+  String _model = yolo;
   File _image;
+  List _predicted;
 
   double _imageWidth;
   double _imageHeight;
@@ -44,9 +46,14 @@ class _TfliteHomeState extends State<TfliteHome> {
           model: "assets/tflite/yolov2_tiny.tflite",
           labels: "assets/tflite/yolov2_tiny.txt",
         );
-      } else {
+      } else if (_model == ssd) {
         res = await Tflite.loadModel(
           model: "assets/tflite/ssd_mobilenet.tflite",
+          labels: "assets/tflite/ssd_mobilenet.txt",
+        );
+      } else {
+        res = await Tflite.loadModel(
+          model: "assets/tflite/converted_makeup_model_v2.tflite",
           labels: "assets/tflite/ssd_mobilenet.txt",
         );
       }
@@ -70,8 +77,10 @@ class _TfliteHomeState extends State<TfliteHome> {
 
     if (_model == yolo) {
       await yolov2Tiny(image);
-    } else {
+    } else if (_model==ssd) {
       await ssdMobileNet(image);
+    } else {
+      await customPreditct(image);
     }
 
     FileImage(image)
@@ -89,17 +98,41 @@ class _TfliteHomeState extends State<TfliteHome> {
     });
   }
 
+  customPreditct(File image) async {
+    var predicted;
+    try{
+       predicted = await Tflite.runModelOnImage(
+          path: image.path,
+          threshold: 0.3,
+          imageMean: 127.5,
+          imageStd: 127.5,
+          numResults: 2);
+    } on Exception catch(error){
+      print(error.toString());
+    }
+    setState(() {
+      _predicted = predicted;
+    });
+    print(_predicted.toString());
+  }
+
   yolov2Tiny(File image) async {
-    var recognitions = await Tflite.detectObjectOnImage(
-        path: image.path,
-        model: "YOLO",
-        threshold: 0.3,
-        imageMean: 0.0,
-        imageStd: 255.0,
-        numResultsPerClass: 1);
+//    var recognitions = await Tflite.detectObjectOnImage(
+//        path: image.path,
+//        model: "YOLO",
+//        threshold: 0.3,
+//        imageMean: 0.0,
+//        imageStd: 255.0,
+//        numResultsPerClass: 1);
+      var predicted = await Tflite.runModelOnImage(
+          path: image.path,
+      numResults: 1,
+      imageMean: 0.0,
+      imageStd: 255.0,
+      threshold: 0.3).catchError((e,s)=>debugPrint("prediction failure: $e $s"));
 
     setState(() {
-      _recognitions = recognitions;
+      _predicted = predicted;
     });
   }
 
@@ -159,7 +192,7 @@ class _TfliteHomeState extends State<TfliteHome> {
       child: _image == null ? Text("No Image Selected") : Image.file(_image),
     ));
 
-    stackChildren.addAll(renderBoxes(size));
+    //stackChildren.addAll(renderBoxes(size));
 
     if (_busy) {
       stackChildren.add(Center(
@@ -176,8 +209,19 @@ class _TfliteHomeState extends State<TfliteHome> {
         tooltip: "Pick Image from gallery",
         onPressed: selectFromImagePicker,
       ),
-      body: Stack(
-        children: stackChildren,
+      body: SingleChildScrollView(
+
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              child: _image == null ? Text("No Image Selected") : Image.file(_image)
+            ),
+            SizedBox(height: 8),
+            Text(_predicted.toString(),style: TextStyle(fontSize: 18)),
+            SizedBox(height: 32)
+          ],
+        ),
       ),
     );
   }

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "113726624241",
+    "firebase_url": "https://bangkit-fp.firebaseio.com",
+    "project_id": "bangkit-fp",
+    "storage_bucket": "bangkit-fp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113726624241:android:23f0522bb482876818f450",
+        "android_client_info": {
+          "package_name": "com.example.tflite_demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "113726624241-o0l40md7erbilqhq00l1grvqgkmonbls.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tflite_demo",
+            "certificate_hash": "72c4fb91116624c382cda433f9d2a29f1794d541"
+          }
+        },
+        {
+          "client_id": "113726624241-9kv3sa3ubct3u0rja1b4dlsmskltq31h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkkMhCng3U-mCpXEgQ3D94nQGq0dE19Tw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "113726624241-9kv3sa3ubct3u0rja1b4dlsmskltq31h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
