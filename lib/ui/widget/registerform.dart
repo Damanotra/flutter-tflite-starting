@@ -10,7 +10,7 @@ class _RegisterFormState extends State<RegisterForm>{
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void goToProfilesetup (){
+  goToProfilesetup (){
     print("move to profile setup");
     Navigator.of(context).pushNamed('/profilesetup');
   }

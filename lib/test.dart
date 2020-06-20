@@ -15,7 +15,7 @@ class TfliteHome extends StatefulWidget {
 }
 
 class _TfliteHomeState extends State<TfliteHome> {
-  String _model = ssd;
+  String _model = custom;
   File _image;
   List _predicted;
 
@@ -100,20 +100,27 @@ class _TfliteHomeState extends State<TfliteHome> {
 
   customPreditct(File image) async {
     var predicted;
+    var recognitions;
     try{
-       predicted = await Tflite.runModelOnImage(
+      recognitions = await Tflite.detectObjectOnImage(
           path: image.path,
           threshold: 0.3,
-          imageMean: 127.5,
-          imageStd: 127.5,
-          numResults: 2);
+          imageMean: 0.0,
+          imageStd: 255.0,
+          numResultsPerClass: 1);
+//       predicted = await Tflite.runModelOnImage(
+//          path: image.path,
+//          threshold: 0.3,
+//          imageMean: 127.5,
+//          imageStd: 127.5,
+//          numResults: 2);
     } on Exception catch(error){
       print(error.toString());
     }
     setState(() {
-      _predicted = predicted;
+      _recognitions = recognitions;
     });
-    print(_predicted.toString());
+    print(_recognitions.toString());
   }
 
   yolov2Tiny(File image) async {

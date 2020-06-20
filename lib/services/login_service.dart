@@ -8,7 +8,7 @@ class LoginService extends ChangeNotifier{
 
   Future<bool> isAuthenticated(String email, String password) async{
     var result = await _api.getMatchedData(email, password);
-    print(result.documents);
+    //print(result.documents[0].data['name']);
     authenticated = result.documents.toList().length > 0 ? true : false;
     return authenticated;
   }

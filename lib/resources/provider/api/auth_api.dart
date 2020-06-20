@@ -5,7 +5,10 @@ class AuthAPI{
   Future<QuerySnapshot> getMatchedData(String email, String password){
     print("email=$email");
     print("password=$password");
-    final rest = Firestore.instance.collection("users").where("email",isEqualTo: "test@test.com").getDocuments();
+    final rest = Firestore.instance.collection("users")
+        .where("email",isEqualTo: email)
+        .where("password",isEqualTo: password)
+        .getDocuments();
     return rest;
   }
 }

@@ -11,7 +11,7 @@ class Router {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-          builder: (_)=>(ProfilesetupScreen()),
+          builder: (_)=>(TfliteHome()),
         );
       case '/register':
         return MaterialPageRoute(
