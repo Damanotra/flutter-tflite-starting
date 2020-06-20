@@ -15,7 +15,7 @@ class TfliteHome extends StatefulWidget {
 }
 
 class _TfliteHomeState extends State<TfliteHome> {
-  String _model = yolo;
+  String _model = ssd;
   File _image;
   List _predicted;
 
@@ -117,22 +117,16 @@ class _TfliteHomeState extends State<TfliteHome> {
   }
 
   yolov2Tiny(File image) async {
-//    var recognitions = await Tflite.detectObjectOnImage(
-//        path: image.path,
-//        model: "YOLO",
-//        threshold: 0.3,
-//        imageMean: 0.0,
-//        imageStd: 255.0,
-//        numResultsPerClass: 1);
-      var predicted = await Tflite.runModelOnImage(
-          path: image.path,
-      numResults: 1,
-      imageMean: 0.0,
-      imageStd: 255.0,
-      threshold: 0.3).catchError((e,s)=>debugPrint("prediction failure: $e $s"));
+    var recognitions = await Tflite.detectObjectOnImage(
+        path: image.path,
+        model: "YOLO",
+        threshold: 0.3,
+        imageMean: 0.0,
+        imageStd: 255.0,
+        numResultsPerClass: 1);
 
     setState(() {
-      _predicted = predicted;
+      _recognitions = recognitions;
     });
   }
 
@@ -192,7 +186,7 @@ class _TfliteHomeState extends State<TfliteHome> {
       child: _image == null ? Text("No Image Selected") : Image.file(_image),
     ));
 
-    //stackChildren.addAll(renderBoxes(size));
+    stackChildren.addAll(renderBoxes(size));
 
     if (_busy) {
       stackChildren.add(Center(
@@ -209,19 +203,8 @@ class _TfliteHomeState extends State<TfliteHome> {
         tooltip: "Pick Image from gallery",
         onPressed: selectFromImagePicker,
       ),
-      body: SingleChildScrollView(
-
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              child: _image == null ? Text("No Image Selected") : Image.file(_image)
-            ),
-            SizedBox(height: 8),
-            Text(_predicted.toString(),style: TextStyle(fontSize: 18)),
-            SizedBox(height: 32)
-          ],
-        ),
+      body: Stack(
+        children: stackChildren,
       ),
     );
   }

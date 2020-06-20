@@ -1,4 +1,7 @@
 import 'package:get_it/get_it.dart';
+import 'package:tflite_demo/resources/provider/api/auth_api.dart';
+
+import 'services/login_service.dart';
 
 
 final GetIt locator = GetIt.instance;
@@ -8,11 +11,11 @@ void setupLocator() async {
 //  locator.registerLazySingleton(() => prefs);
 
   //firebase singleton
-  //locator.registerLazySingleton(() => AuthAPI());
+  locator.registerLazySingleton<AuthAPI>(() => AuthAPI());
 
   // Repository/API singleton
 
 
   // Service singleton
-  //locator.registerLazySingleton(() => LoginService());
+  locator.registerLazySingleton(() => LoginService());
 }
