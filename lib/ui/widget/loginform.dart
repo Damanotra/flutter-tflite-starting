@@ -160,6 +160,7 @@ class _LoginFormState extends State<LoginForm>{
                     SizedBox(height: size.height*0.02),
                     GestureDetector(
                       onTap: (){
+                        print("move to register");
                         Navigator.of(context).pushNamed('/register');
                       },
                       child: Text(

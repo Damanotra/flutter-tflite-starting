@@ -3,14 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:tflite_demo/ui/screen/login/login.dart';
 import 'test.dart';
 import 'ui/screen/home/home.dart';
+import 'ui/screen/profilesetup/profilesetup.dart';
+import 'ui/screen/register/register.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-          builder: (_)=>(TfliteHome()),
+          builder: (_)=>(ProfilesetupScreen()),
         );
+      case '/register':
+        return MaterialPageRoute(
+          builder: (_)=>RegisterScreen(),
+        );
+        break;
+      case '/profilesetup':
+        return MaterialPageRoute(
+          builder: (_)=>ProfilesetupScreen(),
+        );
+        break;
       case '/home':
         return MaterialPageRoute(
           builder: (_)=>HomeScreen(),
